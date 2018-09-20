@@ -21,7 +21,8 @@ def main():
     dp.add_handler(CommandHandler("start", greet_user))
     dp.add_handler(CommandHandler("planet", get_constellation))
     dp.add_handler(CommandHandler("wordcount", count_words))
-    dp.add_handler(MessageHandler(Filters.text, next_full_moon))
+    dp.add_handler(MessageHandler(Filters.text, handle_text_message))
+
     mybot.start_polling()
     mybot.idle()
 

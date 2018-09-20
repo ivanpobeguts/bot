@@ -1,5 +1,6 @@
 import ephem
 from datetime import datetime
+import re
 
 
 def count_constellation(planet_name):
@@ -26,3 +27,38 @@ def count_constellation(planet_name):
 
     constel = ephem.constellation(planet)
     return constel[1]
+
+
+def next_full_moon(user_text):
+    date_string = user_text[-11:-1]
+    try:
+        datetime.strptime(date_string, '%Y-%m-%d')
+        next_full_moon = ephem.next_full_moon(date_string)
+        return str(next_full_moon)
+    except ValueError:
+        return "Неправильный формат даты, ожидается YYYY-MM-DD"
+
+
+def calculate(user_text):
+    if re.match(r'(\d+)[\+*-/](\d+)', user_text):
+        chunks = ['']
+
+        for character in user_text:
+            if character.isdigit():
+                if chunks[-1].isdigit():
+                    chunks[-1] += character
+                else:
+                    chunks.append(character)
+            elif character in '+-/*':
+                chunks.append(character)
+        if '+' in chunks:
+            return int(chunks[1]) + int(chunks[3])
+        if '-' in chunks:
+            return int(chunks[1]) - int(chunks[3])
+        if '*' in chunks:
+            return int(chunks[1]) * int(chunks[3])
+        if '/' in chunks:
+            return int(chunks[1]) / int(chunks[3])
+    else:
+        return 'Неправильный формат. Пример: 129+389='
+
