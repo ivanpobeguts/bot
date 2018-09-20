@@ -14,6 +14,8 @@ def handle_text_message(bot, update):
         update.message.reply_text(next_full_moon(user_text))
     elif user_text.endswith('='):
         update.message.reply_text(calculate(user_text))
+    elif user_text.startswith('сколько будет'):
+        update.message.reply_text(calculate_in_words(user_text))
 
 
 def get_constellation(bot, update):
