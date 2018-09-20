@@ -1,5 +1,7 @@
 from helper import count_constellation
+from datetime import datetime
 import re
+import ephem
 
 
 def greet_user(bot, update):
@@ -8,10 +10,16 @@ def greet_user(bot, update):
     update.message.reply_text(text)
 
 
-def talk_to_me(bot, update):
+def next_full_moon(bot, update):
     user_text = update.message.text
-    print(user_text)
-    update.message.reply_text(user_text)
+    if user_text.startswith('Когда ближайшее полнолуние после'):
+        date_string = user_text[-11:-1]
+        try:
+            datetime.strptime(date_string, '%Y-%m-%d')
+            next_full_moon = ephem.next_full_moon(date_string)
+            update.message.reply_text(str(next_full_moon))
+        except ValueError:
+            update.message.reply_text(str("Неправильный формат даты, ожидается YYYY-MM-DD"))
 
 
 def get_constellation(bot, update):
