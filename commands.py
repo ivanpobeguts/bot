@@ -1,4 +1,5 @@
-from helper import *
+import planet_helper as ph
+import calculation_helper as ch
 import re
 
 
@@ -11,16 +12,16 @@ def greet_user(bot, update):
 def handle_text_message(bot, update):
     user_text = update.message.text
     if user_text.startswith('Когда ближайшее полнолуние после'):
-        update.message.reply_text(next_full_moon(user_text))
+        update.message.reply_text(ph.next_full_moon(user_text))
     elif user_text.endswith('='):
-        update.message.reply_text(calculate(user_text))
+        update.message.reply_text(ch.calculate(user_text))
     elif user_text.startswith('сколько будет'):
-        update.message.reply_text(calculate_in_words(user_text))
+        update.message.reply_text(ch.calculate_in_words(user_text))
 
 
 def get_constellation(bot, update):
     user_text = update.message.text
-    constel = count_constellation(user_text.split(" ")[1])
+    constel = ph.count_constellation(user_text.split(" ")[1])
     if constel == None:
         constel = 'No such planet'
     update.message.reply_text(constel)
